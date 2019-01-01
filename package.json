@@ -1,0 +1,38 @@
+{
+  "name": "todo-server",
+  "version": "1.0.0",
+  "description": "Server hosting todo vue app api",
+  "main": "./lib/server.js",
+  "author": "Kevin",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "DEBUG=app,app:* ts-node ./lib/server.ts",
+    "start": "nodemone ./dist/server.js",
+    "prod": "yarn build && yarn start"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/chalk": "^2.2.0",
+    "@types/debug": "^0.0.31",
+    "@types/express": "^4.16.0",
+    "@types/mongodb": "^3.1.18",
+    "@types/mongoose": "^5.3.5",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^10.12.18",
+    "bcrypt": "^3.0.3",
+    "body-parser": "^1.18.3",
+    "chalk": "^2.4.1",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.1",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.18.9",
+    "ts-node": "^7.0.1",
+    "tsconfig": "^7.0.0",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {}
+}
