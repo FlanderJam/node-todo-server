@@ -1,9 +1,12 @@
 import * as bodyParser from 'body-parser';
 import chalk from 'chalk';
+import * as cookieParser from 'cookie-parser';
 import * as Debug from 'debug';
 import * as express from 'express';
+import * as expressSession from 'express-session';
 import * as mongoose from 'mongoose';
 import * as morgan from 'morgan';
+import { passportConfig } from '../config/passport';
 import { Routes } from './routes/crmRoutes';
 
 const debug = Debug('app');
@@ -27,6 +30,12 @@ class App {
 
         // * support application/x-www-form-urlencoded post data
         this.app.use(bodyParser.urlencoded({ extended: false }));
+
+        this.app.use(cookieParser());
+
+        this.app.use(expressSession({ secret: 'todo-server' }));
+
+        passportConfig(this.app)
     }
 
     private mongoSetup(): void {

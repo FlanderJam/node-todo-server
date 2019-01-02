@@ -1,6 +1,10 @@
+import chalk from 'chalk';
+import * as Debug from 'debug';
 import * as mongoose from 'mongoose';
 import { TodoInterface, UserInterface } from './interfaces';
 import * as bcrypt from 'bcrypt';
+
+const debug = Debug('app:crmModels');
 
 const Schema = mongoose.Schema;
 const SALT_WOR_FACTOR = 10;
@@ -45,6 +49,10 @@ const UserSchema = new Schema({
         type: String,
         required: 'Password is required!'
     },
+    privilege: {
+        type: String,
+        default: 'user'
+    },
     createDate: {
         type: Date,
         default: Date.now
@@ -81,8 +89,8 @@ UserSchema.pre('save', function (next) {
     });
 });
 
-UserSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+UserSchema.methods.comparePassword = function (candidatePassword: string, user: any, cb) {
+    bcrypt.compare(candidatePassword, user.password, function (err, isMatch) {
         if (err) return cb(err);
         cb(null, isMatch);
     });

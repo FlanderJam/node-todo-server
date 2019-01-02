@@ -1,15 +1,16 @@
 export interface TodoInterface {
-    createDate: Date,
-    deleteDate: Date | null,
-    updateDate: Date,
     todoTitle: string,
     todoDescription: string,
-    todoIsComplete: boolean
+    todoIsComplete: boolean,
+    createDate: Date,
+    deleteDate: Date | null,
+    updateDate: Date
 }
 
 export interface UserInterface {
     username: string,
     password: string,
+    privilege: string,
     createDate: Date,
     deleteDate: Date | null,
     updateDate: Date

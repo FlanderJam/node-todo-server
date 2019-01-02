@@ -1,6 +1,11 @@
+import chalk from 'chalk';
+import * as Debug from 'debug';
 import * as mongoose from 'mongoose';
 import { TodoModel, UserModel } from '../models/crmModels';
 import { Request, Response } from 'express';
+import * as passport from 'passport';
+
+const debug = Debug('app:crmControllers');
 
 const Todo = TodoModel;
 const User = UserModel;
@@ -62,16 +67,32 @@ export class UserController {
             if (err) {
                 res.send(err);
             }
-            res.json(user);
+            res.json({
+                "_id": user._id,
+                "username": user.username,
+                "privilege": user.privilege,
+                "createDate": user.createDate,
+                "updateDate": user.updateDate,
+                "deleteDate": user.deleteDate
+            });
         })
     }
 
     public getUsers(req: Request, res: Response) {
-        User.find({}, (err, users) => {
+        User.find({}, { username: 1, privilege: 1, createDate: 1, updateDate: 1 }, (err, users) => {
             if (err) {
                 res.send(err);
             }
             res.json(users);
+        })
+    }
+
+    public getUserById(req: Request, res: Response) {
+        User.findById(req.params.id, { username: 1, privilege: 1, createDate: 1, updateDate: 1 }, (err, user) => {
+            if (err) {
+                res.send(err);
+            }
+            res.json(user);
         })
     }
 }
