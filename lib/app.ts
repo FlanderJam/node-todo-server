@@ -33,13 +33,17 @@ class App {
 
         this.app.use(cookieParser());
 
-        this.app.use(expressSession({ secret: 'todo-server' }));
+        this.app.use(expressSession({
+            secret: 'todo-server',
+            resave: false,
+            saveUninitialized: false
+        }));
 
         passportConfig(this.app)
     }
 
     private mongoSetup(): void {
-        mongoose.connect(this.mongoUrl);
+        mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
     }
 }
 
