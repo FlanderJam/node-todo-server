@@ -31,7 +31,7 @@ class App {
         // * support application/x-www-form-urlencoded post data
         this.app.use(express.urlencoded({ extended: false }));
 
-        this.app.use(cookieParser());
+        this.app.use(cookieParser('userSecret'));
 
         this.app.use(expressSession({
             secret: 'todo-server',

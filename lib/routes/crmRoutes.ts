@@ -12,6 +12,15 @@ export class Routes {
     public userController: UserController = new UserController();
 
     public routes(app): void {
+
+        app.use((req: Request, res: Response, next: () => void) => {
+            if (req.url.includes('/api/login') || req.signedCookies['user'] || (!req.signedCookies['user'] && (req.url.includes('signin') || req.url.includes('signup')))) {
+                next();
+            } else {
+                res.status(400).send('Unauthorized!');
+            }
+        })
+
         app.route('/')
             .get((req: Request, res: Response) => {
                 res.status(200).send({
@@ -49,21 +58,23 @@ export class Routes {
                 })
             );
 
-        // app.route('/auth/signout')
-        //     .post(this.authController.signout)
+        app.route('/auth/signout')
+            .post((req: Request, res: Response) => {
+                res.clearCookie('user');
+                res.send({ message: 'Logout successful.' });
+            })
 
         // * api
         app.get('/api/login/success', (req: Request, res: Response) => {
-            res.send({
-                user: {
-                    "_id": req.user._id,
-                    "username": req.user.username,
-                    "privilege": req.user.privilege,
-                    "createDate": req.user.createDate,
-                    "updateDate": req.user.updateDate,
-                    "deleteDate": req.user.deleteDate
-                }
-            });
+            res.cookie('user', {
+                "_id": req.user._id,
+                "username": req.user.username,
+                "privilege": req.user.privilege,
+                "createDate": req.user.createDate,
+                "updateDate": req.user.updateDate,
+                "deleteDate": req.user.deleteDate
+            }, { expires: new Date(Date.now() + 60000 * 5), signed: true });
+            res.send({ message: 'Login successful.' });
         });
         app.get('/api/login/failure', (req: Request, res: Response) => {
             res.send({ message: 'Invalid username or password' });
