@@ -12,6 +12,7 @@ const User = UserModel;
 
 export class TodoController {
     public addNewTodo(req: Request, res: Response) {
+        req.body.user = req.signedCookies.user;
         let newTodo = new Todo(req.body);
 
         newTodo.save((err, todo) => {
@@ -23,7 +24,7 @@ export class TodoController {
     }
 
     public getTodos(req: Request, res: Response) {
-        Todo.find({}, (err, todo) => {
+        Todo.find({ user: req.signedCookies.user._id }, (err, todo) => {
             if (err) {
                 res.send(err);
             }
