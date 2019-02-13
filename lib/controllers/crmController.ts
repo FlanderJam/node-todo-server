@@ -37,12 +37,16 @@ export class TodoController {
             if (err) {
                 res.send(err);
             }
-            res.json(todo);
+            if (todo['user'] == req.signedCookies.user._id) {
+                res.json(todo);
+            } else {
+                res.status(400).send('Unauthorized.');
+            }
         })
     }
 
     public updateTodo(req: Request, res: Response) {
-        Todo.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, todo) => {
+        Todo.findOneAndUpdate({ _id: req.params.id, user: req.signedCookies.user._id }, req.body, { new: true }, (err, todo) => {
             if (err) {
                 res.send(err);
             }
@@ -51,7 +55,7 @@ export class TodoController {
     }
 
     public deleteTodo(req: Request, res: Response) {
-        Todo.findOneAndUpdate({ _id: req.params.id }, { deleteDate: Date.now(), updateDate: Date.now() }, { new: true }, (err, todo) => {
+        Todo.findOneAndUpdate({ _id: req.params.id, user: req.signedCookies.user._id }, { deleteDate: Date.now(), updateDate: Date.now() }, { new: true }, (err, todo) => {
             if (err) {
                 res.send(err);
             }

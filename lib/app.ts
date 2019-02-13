@@ -6,6 +6,7 @@ import * as express from 'express';
 import * as expressSession from 'express-session';
 import * as mongoose from 'mongoose';
 import * as morgan from 'morgan';
+import * as path from 'path';
 import { passportConfig } from '../config/passport';
 import { Routes } from './routes/crmRoutes';
 
@@ -39,7 +40,9 @@ class App {
             saveUninitialized: false
         }));
 
-        passportConfig(this.app)
+        passportConfig(this.app);
+
+        this.app.use(express.static(path.join(__dirname, '../../todo/dist')));
     }
 
     private mongoSetup(): void {

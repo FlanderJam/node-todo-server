@@ -14,6 +14,14 @@ const httpsOptions = {
     cert: fs.readFileSync('./config/localhost.crt')
 }
 
-https.createServer(httpsOptions, app).listen(PORT, () => {
+/**
+ * TODO: Switch back to https once the self signed certificate
+ * trust issue has been resolved.
+ */
+// https.createServer(httpsOptions, app).listen(PORT, () => {
+//     debug(`Express server listening on port ${chalk.green(`${PORT}`)}`)
+// });
+
+app.listen(PORT, () => {
     debug(`Express server listening on port ${chalk.green(`${PORT}`)}`)
-})
+});

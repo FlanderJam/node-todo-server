@@ -14,7 +14,7 @@ export class Routes {
     public routes(app): void {
 
         app.use((req: Request, res: Response, next: () => void) => {
-            if (req.url.includes('/api/login') || req.signedCookies['user'] || (!req.signedCookies['user'] && (req.url.includes('signin') || req.url.includes('signup')))) {
+            if (req.url.includes('/api/login') || req.url === '/' || req.signedCookies['user'] || (!req.signedCookies['user'] && (req.url.includes('signin') || req.url.includes('signup')))) {
                 next();
             } else {
                 res.status(400).send('Unauthorized!');
@@ -23,9 +23,7 @@ export class Routes {
 
         app.route('/')
             .get((req: Request, res: Response) => {
-                res.status(200).send({
-                    message: 'GET request successful.'
-                });
+                res.render('index');
             });
 
         // * todo
